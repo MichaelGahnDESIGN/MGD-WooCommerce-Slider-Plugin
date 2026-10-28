@@ -1,0 +1,13 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "mgd/slider",
+  "title": "MGD Slider",
+  "category": "widgets",
+  "icon": "images-alt2",
+  "description": "Zeigt einen Slider aus MGD Slider.",
+  "textdomain": "mgd-slider",
+  "attributes": { "sliderId": { "type": "number", "default": 0 } },
+  "supports": { "html": false, "align": ["wide", "full"] },
+  "editorScript": "file:./editor.js"
+}
