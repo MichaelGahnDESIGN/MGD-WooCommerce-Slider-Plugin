@@ -1,6 +1,6 @@
 # MGD WooCommerce Slider Plugin
 
-> Pre-Alpha 0.1.0. Das Plugin ist ein frühes Gerüst. Es ist noch nicht für echte Shops gedacht.
+> Pre-Alpha 0.1.1. Das Plugin ist ein frühes Gerüst. Es ist noch nicht für echte Shops gedacht.
 
 Ein "Super-Slider" für WooCommerce von Michael Gahn DESIGN. Zwei Arten:
 
@@ -13,7 +13,8 @@ In der kostenlosen Version kannst du bis zu 5 Slider anlegen. Mit einer Pro-Lize
 
 - ✅ Lädt in WordPress, legt den Beitragstyp "Slider" an, Backend-Seite mit Einstellungen und Slides, Shortcode und Block (siehe Abschnitt Tests im Hauptplan).
 - ✅ Limit von 5 Slidern wird serverseitig geprüft.
-- ☑️ Prime-Abfrage (zufällig, meistverkauft, Kategorie, manuell) ist geschrieben, aber noch nicht mit echten WooCommerce-Artikeln geprüft.
+- ✅ Prime "meistverkauft" in der MGD-Demo (WooCommerce) mit echten Artikeln geprüft: 4 Slides mit Bild, Titel und Button.
+- ☑️ Prime zufällig, Kategorie und manuell sind noch nicht mit echten Artikeln geprüft.
 - ☑️ Noch offen: Drag & Drop zum Sortieren, Live-Vorschau, Colorpicker, Kategorie-Auswahlliste, Plugin-Empfehlungen.
 
 ## Installation, Schritt für Schritt
