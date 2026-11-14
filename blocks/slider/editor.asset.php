@@ -1,2 +1,2 @@
 <?php
-return ['dependencies' => ['wp-blocks', 'wp-element', 'wp-components', 'wp-block-editor'], 'version' => '0.1.1'];
+return ['dependencies' => ['wp-blocks', 'wp-element', 'wp-components', 'wp-block-editor'], 'version' => '1.4.0'];

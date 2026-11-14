@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       MGD WooCommerce Slider Plugin
  * Description:       Super-Slider für WooCommerce: klassisch (Bild / Text + Bild) oder Prime (Slides automatisch aus Shop-Artikeln). Pre-Alpha.
- * Version:           0.1.1
+ * Version:           1.4.0
  * Requires at least: 6.4
  * Requires PHP:      8.1
  * Author:            Michael Gahn DESIGN
@@ -13,7 +13,7 @@
 
 defined('ABSPATH') || exit;
 
-define('MGD_SLIDER_VERSION', '0.1.1');
+define('MGD_SLIDER_VERSION', '1.4.0');
 define('MGD_SLIDER_FILE', __FILE__);
 define('MGD_SLIDER_DIR', plugin_dir_path(__FILE__));
 define('MGD_SLIDER_URL', plugin_dir_url(__FILE__));

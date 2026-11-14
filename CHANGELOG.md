@@ -1,5 +1,11 @@
 # Änderungen
 
+## 1.4.0
+
+- Neue Versionsnummer 1.4.0: Alle MGD-Produkte haben jetzt die gleiche Version. Das Plugin ist trotzdem noch früh (siehe README).
+- Slider-Kern abgeglichen: Text auf dem Bild besser lesbar, auf dem Handy eine feste Höhe, Button-Höhe korrigiert, Beschriftungen der Knöpfe lassen sich übersetzen (sonst Deutsch).
+- Pro-Lizenz und Update-Kanal: gibt es noch nicht.
+
 ## 0.1.1 (Pre-Alpha)
 
 - In der MGD-Demo (WooCommerce) installiert und aktiviert. Shortcode und Block sind da.
