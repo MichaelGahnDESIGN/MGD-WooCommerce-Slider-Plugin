@@ -1,5 +1,12 @@
 # Änderungen
 
+## 1.5.0
+
+- Neu: Install-Meldung (Free-Lizenz). Meldet sich höchstens einmal am Tag bei theme.michael-gahn.de (Plugin, Version, Shopsystem, Domain, zufällige ID). Abschaltbar in den Einstellungen.
+- Gemeldet wird höchstens einmal am Tag im WordPress-Admin. Nach dem Aktivieren erscheint einmal ein Hinweis mit Link zum Schalter.
+- Schalter unter „MGD Slider“ › „Lizenzen“, ab Werk an. Abgeschaltet wird der Eintrag auf der Plattform gelöscht.
+- Der Slider läuft immer voll weiter, auch ohne Plattform.
+
 ## 1.4.0
 
 - Neue Versionsnummer 1.4.0: Alle MGD-Produkte haben jetzt die gleiche Version. Das Plugin ist trotzdem noch früh (siehe README).

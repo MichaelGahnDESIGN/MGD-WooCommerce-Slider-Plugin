@@ -16,7 +16,10 @@ function mgd_slider_license_page(): void
     echo '<div class="wrap"><h1>Lizenzen</h1>';
     echo '<p>Diese Version ist die kostenlose Free-Version (bis zu ' . (int) \MGD\Slider\Limits::FREE_SLIDERS . ' Slider).</p>';
     echo '<p><label>Lizenzcode <input type="text" class="regular-text" disabled placeholder="folgt mit einer späteren Version"></label></p>';
-    echo '<p><a href="https://themes.michael-gahn.de" target="_blank" rel="noopener">Mehr zu den Pro-Lizenzen auf themes.michael-gahn.de</a></p></div>';
+    echo '<p><a href="https://themes.michael-gahn.de" target="_blank" rel="noopener">Mehr zu den Pro-Lizenzen auf themes.michael-gahn.de</a></p>';
+    // Schalter Installation melden (Free-Lizenz)
+    echo '<h2>Installation melden</h2>' . \MGD\WooSlider\Install\Platform\WordPress::settingsHtml(MGD_SLIDER_INSTALL_PRODUCT, 'woocommerce', MGD_SLIDER_VERSION);
+    echo '</div>';
 }
 }
 
