@@ -1,6 +1,6 @@
 # MGD WooCommerce Slider Plugin
 
-> Version 1.5.0 (frühes Plugin). Das Plugin ist ein frühes Gerüst. Es ist noch nicht für echte Shops gedacht.
+> Version 1.6.0 (frühes Plugin). Das Plugin ist ein frühes Gerüst. Es ist noch nicht für echte Shops gedacht.
 
 Ein "Super-Slider" für WooCommerce von Michael Gahn DESIGN. Zwei Arten:
 
@@ -16,6 +16,14 @@ In der kostenlosen Version kannst du bis zu 5 Slider anlegen. Mit einer Pro-Lize
 - ✅ Prime "meistverkauft" in der MGD-Demo (WooCommerce) mit echten Artikeln geprüft: 4 Slides mit Bild, Titel und Button.
 - ☑️ Prime zufällig, Kategorie und manuell sind noch nicht mit echten Artikeln geprüft.
 - ☑️ Noch offen: Drag & Drop zum Sortieren, Live-Vorschau, Colorpicker, Kategorie-Auswahlliste, Plugin-Empfehlungen.
+
+## Info, Updates und Weitere Plugins
+
+Im Menü **MGD Slider** gibt es die Seite **MGD Slider** (Info und Updates). Dort stehen:
+
+- die Version und ob es ein Update gibt (das Update kommt wie bei jedem WordPress-Plugin, es wird nichts ohne dein Zutun installiert),
+- **Weitere Plugins**: andere MGD-Plugins zum Ansehen, kostenlose kannst du mit einem Klick installieren (sie werden nie von selbst aktiviert),
+- der Schalter **Installation bei Michael Gahn DESIGN melden** (ab Werk an). Das Plugin meldet sich höchstens einmal am Tag bei theme.michael-gahn.de (Plugin, Version, Shopsystem, Domain, zufällige ID). Abgeschaltet läuft der Slider genauso weiter.
 
 ## Installation, Schritt für Schritt
 

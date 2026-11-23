@@ -17,8 +17,7 @@ function mgd_slider_license_page(): void
     echo '<p>Diese Version ist die kostenlose Free-Version (bis zu ' . (int) \MGD\Slider\Limits::FREE_SLIDERS . ' Slider).</p>';
     echo '<p><label>Lizenzcode <input type="text" class="regular-text" disabled placeholder="folgt mit einer späteren Version"></label></p>';
     echo '<p><a href="https://themes.michael-gahn.de" target="_blank" rel="noopener">Mehr zu den Pro-Lizenzen auf themes.michael-gahn.de</a></p>';
-    // Schalter Installation melden (Free-Lizenz)
-    echo '<h2>Installation melden</h2>' . \MGD\WooSlider\Install\Platform\WordPress::settingsHtml(MGD_SLIDER_INSTALL_PRODUCT, 'woocommerce', MGD_SLIDER_VERSION);
+    echo '<p>Updates, Weitere Plugins und der Schalter &bdquo;Installation melden&ldquo; stehen auf der Seite &bdquo;Info und Updates&ldquo; im Menü MGD Slider.</p>';
     echo '</div>';
 }
 }

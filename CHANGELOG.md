@@ -1,5 +1,14 @@
 # Änderungen
 
+## 1.6.0
+
+- Brückenversion: Das Plugin nutzt jetzt den gemeinsamen Baukasten von theme.michael-gahn.de (Ordner `inc/Kit`).
+- Neue Seite „MGD Slider“ (Info und Updates) im Menü MGD Slider: Version, Updates, Weitere Plugins (mit Installieren-Knopf für kostenlose Plugins) und der Schalter „Installation melden“.
+- Update-Anzeige in WordPress über theme.michael-gahn.de (Prüfsumme geprüft, kein automatisches Update).
+- Die alte eigene Meldung (`inc/Install`) wird nicht mehr angemeldet. Die Dateien bleiben noch liegen und fliegen in der Endversion raus. Die alte Installations-Kennung bleibt.
+- Beim Löschen des Plugins meldet es sich ab. Die Slider bleiben wie bisher erhalten.
+- Der Slider selbst ist unverändert.
+
 ## 1.5.0
 
 - Neu: Install-Meldung (Free-Lizenz). Meldet sich höchstens einmal am Tag bei theme.michael-gahn.de (Plugin, Version, Shopsystem, Domain, zufällige ID). Abschaltbar in den Einstellungen.

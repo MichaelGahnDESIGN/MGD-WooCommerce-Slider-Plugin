@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       MGD WooCommerce Slider Plugin
  * Description:       Super-Slider für WooCommerce: klassisch (Bild / Text + Bild) oder Prime (Slides automatisch aus Shop-Artikeln). Meldet sich höchstens einmal am Tag bei theme.michael-gahn.de (Plugin, Version, Shopsystem, Domain, zufällige ID). Abschaltbar in den Einstellungen.
- * Version:           1.5.0
+ * Version:           1.6.0
  * Requires at least: 6.4
  * Requires PHP:      8.1
  * Author:            Michael Gahn DESIGN
@@ -13,7 +13,7 @@
 
 defined('ABSPATH') || exit;
 
-define('MGD_SLIDER_VERSION', '1.5.0');
+define('MGD_SLIDER_VERSION', '1.6.0');
 define('MGD_SLIDER_FILE', __FILE__);
 define('MGD_SLIDER_DIR', plugin_dir_path(__FILE__));
 define('MGD_SLIDER_URL', plugin_dir_url(__FILE__));
@@ -29,22 +29,31 @@ require_once MGD_SLIDER_DIR . 'inc/prime-woo.php';
 require_once MGD_SLIDER_DIR . 'inc/render.php';
 require_once MGD_SLIDER_DIR . 'inc/admin.php';
 
-// Install-Client (Free-Lizenz) Autoload > inc/Install, kommt vom Generator
-define('MGD_SLIDER_INSTALL_PRODUCT', 'mgd-slider-woocommerce');
+// Baukasten (Updates, Weitere Plugins, Installation melden) > inc/Kit, kommt vom Generator
+define('MGD_SLIDER_PRODUCT', 'mgd-slider-woocommerce');
 spl_autoload_register(static function (string $class): void {
-    $prefix = 'MGD\\WooSlider\\Install\\';
+    $prefix = 'MGD\\WooSlider\\Kit\\';
     if (str_starts_with($class, $prefix)) {
-        $file = MGD_SLIDER_DIR . 'inc/Install/' . str_replace('\\', '/', substr($class, strlen($prefix))) . '.php';
+        $file = MGD_SLIDER_DIR . 'inc/Kit/' . str_replace('\\', '/', substr($class, strlen($prefix))) . '.php';
         if (is_file($file)) {
             require_once $file;
         }
     }
 });
-// max 1x am Tag im Admin melden + Hinweis nach Aktivieren
+// darf nie den Shop kaputt machen, Slider laeuft immer weiter
 try {
-    \MGD\WooSlider\Install\Platform\WordPress::boot(__FILE__, MGD_SLIDER_INSTALL_PRODUCT, 'woocommerce', MGD_SLIDER_VERSION, admin_url('admin.php?page=mgd-slider-license'));
+    $mgdKitSetup = '\\MGD\\WooSlider\\Kit\\Platform\\WordPress\\Setup';
+    // Update-Anzeige, sichere Installation, Hinweis + Start vom Install-Client
+    $mgdUpdater = $mgdKitSetup::updater(__FILE__, MGD_SLIDER_PRODUCT, 'woocommerce', MGD_SLIDER_VERSION, 'MGD Slider',
+        $mgdKitSetup::dashboardUrl(MGD_SLIDER_PRODUCT, 'edit.php?post_type=mgd_slider'));
+    // Weitere Plugins, eigenes Plugin wird ausgeblendet
+    $mgdList = $mgdKitSetup::recommendations(MGD_SLIDER_PRODUCT, 'woocommerce', 'mgd-woocommerce-slider-plugin', [], 'MGD-WooCommerce-Slider-Plugin');
+    // Seite "Info und Updates" im eigenen Menue, Lizenz aus
+    $mgdKitSetup::dashboard(MGD_SLIDER_PRODUCT, 'woocommerce', MGD_SLIDER_VERSION, 'MGD Slider', $mgdUpdater, $mgdList, false, 'edit.php?post_type=mgd_slider');
+    // alter Updater-Muell, gibt es hier nix
+    $mgdKitSetup::cleanupLegacy(MGD_SLIDER_PRODUCT, MGD_SLIDER_VERSION, []);
 } catch (\Throwable $e) {
-    // egal, Slider läuft trotzdem
+    // egal, Slider laeuft trotzdem
 }
 
 // Slider als eigener Beitragstyp, nur im Backend sichtbar
