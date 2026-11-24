@@ -1,7 +1,7 @@
 <?php
 /**
- * Plugin Name:       MGD WooCommerce Slider Plugin
- * Description:       Super-Slider für WooCommerce: klassisch (Bild / Text + Bild) oder Prime (Slides automatisch aus Shop-Artikeln). Meldet sich höchstens einmal am Tag bei theme.michael-gahn.de (Plugin, Version, Shopsystem, Domain, zufällige ID). Abschaltbar in den Einstellungen.
+ * Plugin Name:       MGD Slider (WordPress, WooCommerce, Divi)
+ * Description:       Super-Slider für WordPress, WooCommerce und Divi: klassisch (Bild / Text + Bild) oder Prime (Slides automatisch aus Beiträgen, Seiten oder Shop-Artikeln). Meldet sich höchstens einmal am Tag bei theme.michael-gahn.de (Plugin, Version, Shopsystem, Domain, zufällige ID). Abschaltbar in den Einstellungen.
  * Version:           1.6.0
  * Requires at least: 6.4
  * Requires PHP:      8.1
@@ -26,6 +26,8 @@ require_once MGD_SLIDER_DIR . 'inc/core/Limits.php';
 
 require_once MGD_SLIDER_DIR . 'inc/storage.php';
 require_once MGD_SLIDER_DIR . 'inc/prime-woo.php';
+require_once MGD_SLIDER_DIR . 'inc/wp-content.php';
+require_once MGD_SLIDER_DIR . 'inc/divi.php';
 require_once MGD_SLIDER_DIR . 'inc/render.php';
 require_once MGD_SLIDER_DIR . 'inc/admin.php';
 

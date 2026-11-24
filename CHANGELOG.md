@@ -1,5 +1,12 @@
 # Änderungen
 
+## Unveröffentlicht (kommt mit 2.1.1)
+
+- Der Slider läuft jetzt auch ohne WooCommerce: Prime holt die Slides wahlweise aus **WordPress-Inhalten** (Beiträge, Seiten, andere öffentliche Inhaltstypen mit Beitragsbild) oder aus **Shop-Artikeln** (nur mit WooCommerce). Auswahl im Slider unter „Inhalte für Prime“. Bestehende Slider bleiben bei Shop-Artikeln.
+- Neues **Divi-Modul „MGD Slider“** (Divi 5, nutzt dieselben Slider). Ohne Divi passiert nichts.
+- Name im Plugin-Kopf: „MGD Slider (WordPress, WooCommerce, Divi)“. Ordner und Plugin-Datei bleiben gleich, damit Updates weiter gehen.
+- Tests: `tests/divi-smoke.php` (Divi-Attrappe). In der Woo-Demo geprüft: WordPress-Inhalte neueste/manuell/zufällig, Shop-Quelle unverändert. Divi-Modul noch nicht in einem echten Divi gesehen.
+
 ## 1.6.0
 
 - Brückenversion: Das Plugin nutzt jetzt den gemeinsamen Baukasten von theme.michael-gahn.de (Ordner `inc/Kit`).

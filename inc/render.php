@@ -17,7 +17,7 @@ function mgd_slider_render(int $id): string
         return current_user_can('edit_posts') ? '<p class="mgd-slider-missing">Slider nicht gefunden.</p>' : '';
     }
     $slides = $cfg['mode'] === 'prime'
-        ? \MGD\Slider\Prime::select(mgd_slider_prime_candidates($cfg), $cfg)
+        ? mgd_slider_prime_slides($id, $cfg)
         : $cfg['slides'];
     if (!$slides) {
         return current_user_can('edit_posts') ? '<p class="mgd-slider-missing">Slider hat noch keine Slides.</p>' : '';

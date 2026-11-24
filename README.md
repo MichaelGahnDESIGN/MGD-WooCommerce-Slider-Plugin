@@ -17,6 +17,12 @@ In der kostenlosen Version kannst du bis zu 5 Slider anlegen. Mit einer Pro-Lize
 - ☑️ Prime zufällig, Kategorie und manuell sind noch nicht mit echten Artikeln geprüft.
 - ☑️ Noch offen: Drag & Drop zum Sortieren, Live-Vorschau, Colorpicker, Kategorie-Auswahlliste, Plugin-Empfehlungen.
 
+## Für WordPress, WooCommerce und Divi
+
+- **Ohne WooCommerce:** Bei Art „Prime“ wählst du unter „Inhalte für Prime“ **WordPress-Inhalte**. Die Slides entstehen dann aus Beiträgen oder Seiten mit Beitragsbild (neueste zuerst, zufällig, nach Kategorie oder per ID).
+- **Mit WooCommerce:** Du kannst weiter **Shop-Artikel** wählen (meistverkauft, zufällig, Kategorie, manuell).
+- **Divi:** Im Divi-Builder gibt es das Modul **MGD Slider**. Dort wählst du einen Slider aus. Der Shortcode `[mgd_slider id="..."]` geht in Divi auch im Text- oder Code-Modul.
+
 ## Info, Updates und Weitere Plugins
 
 Im Menü **MGD Slider** gibt es die Seite **MGD Slider** (Info und Updates). Dort stehen:

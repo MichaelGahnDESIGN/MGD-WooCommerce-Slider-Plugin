@@ -71,6 +71,21 @@ function mgd_slider_metabox(WP_Post $post): void
         . ' Text ' . mgd_slider_field_select('align', ['left' => 'links', 'center' => 'mittig', 'right' => 'rechts'], $c['align'])
         . '<br>Akzentfarbe <input type="text" name="mgd_cfg[accent]" value="' . esc_attr($c['accent']) . '" placeholder="#c8161a" class="small-text"> <span class="description">(leer = Farbe des Themes; Colorpicker kommt aus der Theme-Komponente, folgt)</span></td></tr></table>';
 
+    // Quelle der Inhalte: Shop-Artikel (nur mit WooCommerce) oder WordPress-Inhalte
+    $ctn = mgd_slider_content_get($post->ID);
+    echo '<h3>Inhalte für Prime</h3><table class="form-table"><tr><th>Woher kommen die Slides?</th><td>'
+        . '<select name="mgd_ctn[content]"><option value="wp"' . selected($ctn['content'], 'wp', false) . '>WordPress-Inhalte (Beiträge, Seiten)</option>'
+        . (mgd_slider_shop_active() ? '<option value="shop"' . selected($ctn['content'], 'shop', false) . '>Shop-Artikel (WooCommerce)</option>' : '')
+        . '</select>';
+    if (!mgd_slider_shop_active()) {
+        echo ' <span class="description">WooCommerce ist nicht aktiv, darum gibt es keine Shop-Artikel.</span>';
+    }
+    echo '</td></tr><tr><th>Inhaltstypen</th><td>';
+    foreach (mgd_slider_content_types() as $t => $label) {
+        echo '<label style="margin-right:12px"><input type="checkbox" name="mgd_ctn[types][]" value="' . esc_attr($t) . '"' . checked(in_array($t, $ctn['types'], true), true, false) . '> ' . esc_html($label) . '</label>';
+    }
+    echo '<p class="description">Nur bei „WordPress-Inhalte“. Nur Inhalte mit Beitragsbild kommen in den Slider. Bei Quelle „Meistverkauft“ gilt hier: neueste zuerst. „Kategorie-IDs“ sind Beitrags-Kategorien, „manuell“ sind Beitrags- oder Seiten-IDs.</p></td></tr></table>';
+
     echo '<h3>Prime</h3><p class="description">Nur bei Art „Prime“. Die Slides entstehen aus deinen Artikeln, du legst nur die Anzahl fest.</p><table class="form-table">';
     echo '<tr><th>Quelle</th><td>' . str_replace('mgd_cfg[', 'mgd_cfg[prime_', mgd_slider_field_select('source', ['random' => 'Zufällig', 'bestseller' => 'Meistverkauft', 'category' => 'Kategorie', 'manual' => 'Manuell'], $c['prime']['source']))
         . ' Anzahl <input type="number" min="1" max="12" name="mgd_cfg[prime_count]" value="' . (int) $c['prime']['count'] . '" class="small-text"></td></tr>';
@@ -116,6 +131,8 @@ add_action('save_post_mgd_slider', function (int $id): void {
     }
     $in['slides'] = $slides;
     update_post_meta($id, '_mgd_slider_config', wp_json_encode(\MGD\Slider\Config::normalize($in)));
+    $ctnIn = wp_unslash($_POST['mgd_ctn'] ?? []);
+    update_post_meta($id, MGD_SLIDER_CONTENT_META, wp_json_encode(mgd_slider_content_clean(is_array($ctnIn) ? $ctnIn : [])));
 });
 
 // Admin Assets nur auf dem Slider-Beitrag
