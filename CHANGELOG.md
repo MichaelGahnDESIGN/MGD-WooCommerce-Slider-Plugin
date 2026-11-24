@@ -5,6 +5,10 @@
 - Der Slider läuft jetzt auch ohne WooCommerce: Prime holt die Slides wahlweise aus **WordPress-Inhalten** (Beiträge, Seiten, andere öffentliche Inhaltstypen mit Beitragsbild) oder aus **Shop-Artikeln** (nur mit WooCommerce). Auswahl im Slider unter „Inhalte für Prime“. Bestehende Slider bleiben bei Shop-Artikeln.
 - Neues **Divi-Modul „MGD Slider“** (Divi 5, nutzt dieselben Slider). Ohne Divi passiert nichts.
 - Name im Plugin-Kopf: „MGD Slider (WordPress, WooCommerce, Divi)“. Ordner und Plugin-Datei bleiben gleich, damit Updates weiter gehen.
+- Baukasten 1.14: alles hängt jetzt unter dem Menü **MGD Tools** (Übersicht und Updates, Lizenz, Weitere Plugins, Seite „Slider“ mit der Slider-Liste). Das eigene Hauptmenü „MGD Slider“ und die eigene Lizenzseite sind weg. Der Baukasten liegt jetzt in `src/Kit`.
+- Icons (`assets/icon-128x128.png`, `icon-256x256.png`), genormter Plugin-Kopf „MGD Slider“ mit einem Satz Beschreibung.
+- Akzentfarbe im Slider nutzt den MGD Farbwähler (`data-mgd-color`).
+- `check-plugin-ready` ist grün. In der Woo-Demo geprüft: MGD Tools mit Unterseite „Slider“, kein eigenes Menü, Wartungsmodus bleibt an.
 - Tests: `tests/divi-smoke.php` (Divi-Attrappe). In der Woo-Demo geprüft: WordPress-Inhalte neueste/manuell/zufällig, Shop-Quelle unverändert. Divi-Modul noch nicht in einem echten Divi gesehen.
 
 ## 1.6.0

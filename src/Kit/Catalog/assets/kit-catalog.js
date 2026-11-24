@@ -10,7 +10,8 @@
       .replace(/ß/g, "ss");
 
   // JTL zeigt Übersicht + Tab auf einer Seite > jede Liste nur 1x anfassen
-  document.querySelectorAll("[data-mgd-kit-catalog]:not([data-ready])").forEach((root) => {
+  // Skript kann zwischen 2 Listen stehen > 2. Liste ist beim Start noch nicht geparst, deshalb auch nach DOMContentLoaded (Befund Codex-Review Suche)
+  const setup = (root) => {
     root.setAttribute("data-ready", "");
     const cards = [...root.querySelectorAll("[data-card]")];
     const search = root.querySelector("[data-search-input]");
@@ -107,5 +108,8 @@
         if (trigger) trigger.focus();
       });
     }
-  });
+  };
+  const init = () => document.querySelectorAll("[data-mgd-kit-catalog]:not([data-ready])").forEach(setup);
+  init();
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
 })();

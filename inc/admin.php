@@ -1,25 +1,25 @@
 <?php
 defined('ABSPATH') || exit;
 
-// Menü: Slider, Neu, Lizenzen
-add_action('admin_menu', function (): void {
-    add_menu_page('MGD Slider', 'MGD Slider', 'edit_posts', 'edit.php?post_type=mgd_slider', '', 'dashicons-images-alt2', 58);
-    add_submenu_page('edit.php?post_type=mgd_slider', 'Alle Slider', 'Alle Slider', 'edit_posts', 'edit.php?post_type=mgd_slider');
-    add_submenu_page('edit.php?post_type=mgd_slider', 'Neuer Slider', 'Neu anlegen', 'edit_posts', 'post-new.php?post_type=mgd_slider');
-    add_submenu_page('edit.php?post_type=mgd_slider', 'Lizenzen', 'Lizenzen', 'manage_options', 'mgd-slider-license', 'mgd_slider_license_page');
-});
-
-// Lizenzen: Platzhalter (Free). Link zur Seite für Pro-Lizenzen
-if (!function_exists('mgd_slider_license_page')) {
-function mgd_slider_license_page(): void
+// Seite unter MGD Tools > Slider: Liste mit Shortcode, Bearbeiten und Neu anlegen (kein eigenes Hauptmenü mehr)
+function mgd_slider_tools_page(): void
 {
-    echo '<div class="wrap"><h1>Lizenzen</h1>';
-    echo '<p>Diese Version ist die kostenlose Free-Version (bis zu ' . (int) \MGD\Slider\Limits::FREE_SLIDERS . ' Slider).</p>';
-    echo '<p><label>Lizenzcode <input type="text" class="regular-text" disabled placeholder="folgt mit einer späteren Version"></label></p>';
-    echo '<p><a href="https://themes.michael-gahn.de" target="_blank" rel="noopener">Mehr zu den Pro-Lizenzen auf themes.michael-gahn.de</a></p>';
-    echo '<p>Updates, Weitere Plugins und der Schalter &bdquo;Installation melden&ldquo; stehen auf der Seite &bdquo;Info und Updates&ldquo; im Menü MGD Slider.</p>';
-    echo '</div>';
-}
+    $new = admin_url('post-new.php?post_type=mgd_slider');
+    echo '<div class="mgd-tools-slider"><p><a class="button button-primary" href="' . esc_url($new) . '">Neuen Slider anlegen</a></p>';
+    $rows = get_posts(['post_type' => 'mgd_slider', 'post_status' => ['publish', 'draft', 'pending', 'private'], 'numberposts' => 100]);
+    if (!$rows) {
+        echo '<p>Du hast noch keinen Slider. Lege einen an und binde ihn mit dem Shortcode oder dem Block „MGD Slider“ ein (in Divi gibt es das Modul „MGD Slider“).</p></div>';
+
+        return;
+    }
+    echo '<table class="widefat striped"><thead><tr><th>Name</th><th>Shortcode</th><th>Art</th><th></th></tr></thead><tbody>';
+    foreach ($rows as $p) {
+        $cfg = mgd_slider_get($p->ID) ?? [];
+        $art = ($cfg['mode'] ?? '') === 'prime' ? 'Prime (automatisch)' : 'Klassisch';
+        echo '<tr><td>' . esc_html($p->post_title ?: ('Slider ' . $p->ID)) . '</td><td><code>[mgd_slider id="' . (int) $p->ID . '"]</code></td><td>' . esc_html($art)
+            . '</td><td><a href="' . esc_url(get_edit_post_link($p->ID)) . '">Bearbeiten</a></td></tr>';
+    }
+    echo '</tbody></table><p class="description">Kostenlos bis zu ' . (int) \MGD\Slider\Limits::FREE_SLIDERS . ' Slider. Die Lizenz verwaltest du unter MGD Tools › Lizenz.</p></div>';
 }
 
 // Slider-Liste für den Block (Titel + Id)
@@ -69,7 +69,7 @@ function mgd_slider_metabox(WP_Post $post): void
     echo '<tr><th>Aussehen</th><td>Seitenverhältnis ' . mgd_slider_field_select('aspect', array_combine($opt['aspect'], $opt['aspect']), $c['aspect'])
         . ' Zuschnitt ' . mgd_slider_field_select('fit', ['cover' => 'Füllen (zuschneiden)', 'contain' => 'Ganz zeigen'], $c['fit'])
         . ' Text ' . mgd_slider_field_select('align', ['left' => 'links', 'center' => 'mittig', 'right' => 'rechts'], $c['align'])
-        . '<br>Akzentfarbe <input type="text" name="mgd_cfg[accent]" value="' . esc_attr($c['accent']) . '" placeholder="#c8161a" class="small-text"> <span class="description">(leer = Farbe des Themes; Colorpicker kommt aus der Theme-Komponente, folgt)</span></td></tr></table>';
+        . '<br>Akzentfarbe <input type="text" name="mgd_cfg[accent]" data-mgd-color value="' . esc_attr($c['accent']) . '" placeholder="#c8161a" class="small-text"> <span class="description">(leer = Farbe des Themes; Colorpicker kommt aus der Theme-Komponente, folgt)</span></td></tr></table>';
 
     // Quelle der Inhalte: Shop-Artikel (nur mit WooCommerce) oder WordPress-Inhalte
     $ctn = mgd_slider_content_get($post->ID);
@@ -142,6 +142,9 @@ add_action('admin_enqueue_scripts', function (string $hook): void {
         return;
     }
     wp_enqueue_media();
+    if (class_exists('\\MGD\\WooSlider\\Kit\\Platform\\WordPress\\ColorPicker')) {
+        \MGD\WooSlider\Kit\Platform\WordPress\ColorPicker::enqueue(); // MGD Farbwaehler statt WP Standard
+    }
     wp_enqueue_script('mgd-slider-admin', MGD_SLIDER_URL . 'assets/js/admin.js', ['jquery'], MGD_SLIDER_VERSION, true);
     wp_localize_script('mgd-slider-admin', 'MGDSliderAdmin', ['ajax' => admin_url('admin-ajax.php'), 'nonce' => wp_create_nonce('mgd_slider_admin')]);
 });
