@@ -21,7 +21,9 @@
     empty: "Noch keine Farben gespeichert.",
     done: "Fertig",
     cancel: "Abbrechen",
+    clear: "Leeren",
     invalid: "Bitte eine Farbe wie #1A2B3C eingeben.",
+    none: "keine",
   };
   const QUICK = ["#000000", "#FFFFFF", "#1E2C2C", "#D6C49A", "#B73843", "#2271B1", "#00A32A", "#DBA617", "#8C5BD6", "#F0F0F1"];
   const MAX_MINE = 24;
@@ -106,11 +108,14 @@
     ui.save.textContent = T.save;
     ui.mine.box.after(ui.save);
     const foot = el("div", "mgd-color__foot");
+    // Leeren = Feld ohne Farbe (Plugin nimmt dann seinen Standard, Befund login)
+    ui.clear = el("button", "mgd-color__btn mgd-color__clear", { type: "button" });
+    ui.clear.textContent = T.clear;
     ui.cancel = el("button", "mgd-color__btn", { type: "button" });
     ui.cancel.textContent = T.cancel;
     ui.done = el("button", "mgd-color__btn mgd-color__btn--primary", { type: "button" });
     ui.done.textContent = T.done;
-    foot.append(ui.cancel, ui.done);
+    foot.append(ui.clear, ui.cancel, ui.done);
     pop.append(ui.area, ui.hue, row, ui.msg, ui.quick.wrap, ui.recent.wrap, ui.mine.wrap, foot);
     document.body.append(pop);
     events();
@@ -147,7 +152,8 @@
     if (!removable && !list.length) g.wrap.hidden = true; else g.wrap.hidden = false;
   };
 
-  const render = (from) => {
+  // quiet = nur anzeigen, nix ins Feld schreiben (Öffnen eines leeren Felds)
+  const render = (from, quiet) => {
     const hex = fromHsv(hsv);
     ui.area.style.setProperty("--mgd-hue", "hsl(" + hsv.h + " 100% 50%)");
     ui.thumb.style.left = hsv.s * 100 + "%";
@@ -158,14 +164,20 @@
     if (from !== "hue") ui.hue.value = String(Math.round(hsv.h));
     if (from !== "hex") ui.hex.value = hex;
     ui.preview.style.background = hex;
-    apply(hex);
+    if (!quiet) apply(hex);
   };
+
+  // Knopf einfärben, leer = Schachbrett
+  function paint(btn, hex) {
+    btn.classList.toggle("mgd-color__swatch--empty", !hex);
+    btn.style.background = hex || "";
+    btn.setAttribute("aria-label", T.pick + ": " + (hex || T.none));
+  }
 
   const apply = (hex) => {
     if (!cur) return;
     cur.input.value = hex;
-    cur.btn.style.background = hex;
-    cur.btn.setAttribute("aria-label", T.pick + ": " + hex);
+    paint(cur.btn, hex);
     cur.input.dispatchEvent(new Event("input", { bubbles: true }));
   };
 
@@ -230,6 +242,7 @@
       saveData();
       swatches(ui.mine, data.mine, true);
     });
+    ui.clear.addEventListener("click", () => { apply(""); before = ""; close(true); });
     ui.cancel.addEventListener("click", () => close(false));
     ui.done.addEventListener("click", () => close(true));
     pop.addEventListener("keydown", (e) => {
@@ -271,15 +284,15 @@
     await loadData();
     cur = field;
     trigger = field.btn;
-    before = norm(field.input.value) || "#000000";
-    hsv = toHsv(before);
+    before = norm(field.input.value) || "";
+    hsv = toHsv(before || "#000000");
     ui.msg.textContent = "";
     swatches(ui.quick, QUICK, false);
     swatches(ui.recent, data.recent, false);
     swatches(ui.mine, data.mine, true);
     pop.hidden = false;
     field.btn.setAttribute("aria-expanded", "true");
-    render();
+    render(undefined, true);
     place();
     ui.area.focus();
   };
@@ -306,7 +319,9 @@
   const attach = (input) => {
     if (!input || input.dataset.mgdColorReady) return;
     input.dataset.mgdColorReady = "1";
-    const start = norm(input.value) || "#000000";
+    // leer bleibt leer (Befund login): type=color meldet sonst immer #000000 > Attribut lesen
+    const raw = input.type === "color" ? input.getAttribute("value") || "" : input.value;
+    const start = norm(raw) || "";
     if (input.type === "color") input.type = "text";
     input.value = start;
     input.classList.add("mgd-color__input");
@@ -314,14 +329,14 @@
     input.setAttribute("spellcheck", "false");
     const wrap = el("span", "mgd-color__field");
     input.before(wrap);
-    const btn = el("button", "mgd-color__swatch", { type: "button", "aria-haspopup": "dialog", "aria-expanded": "false", "aria-label": T.pick + ": " + start });
-    btn.style.background = start;
+    const btn = el("button", "mgd-color__swatch", { type: "button", "aria-haspopup": "dialog", "aria-expanded": "false" });
+    paint(btn, start);
     wrap.append(btn, input);
     const field = { input, btn };
     btn.addEventListener("click", () => (cur === field && !pop.hidden ? close(true) : open(field)));
     input.addEventListener("input", () => {
       const v = norm(input.value);
-      if (v) { btn.style.background = v; btn.setAttribute("aria-label", T.pick + ": " + v); }
+      if (v || input.value === "") paint(btn, v || "");
     });
     input.addEventListener("blur", () => { const v = norm(input.value); if (v) input.value = v; });
   };

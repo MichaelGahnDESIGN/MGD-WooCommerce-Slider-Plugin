@@ -17,19 +17,38 @@ final class ColorPicker
     public const CAP = 'edit_posts';
     public const ASSETS = __DIR__ . '/../../Ui/assets/';
 
-    /** 1x pro Seite, egal wie viele MGD-Plugins es mitbringen */
-    public static function register(): void
+    /**
+     * jede Kopie meldet sich an, laden + speichern macht nur der neueste Baukasten (Besitzer von MGD Tools)
+     * sonst gewinnt bei gemischten Ständen die Datei des zuerst geladenen Plugins (Befund Test mit allen 9)
+     */
+    public static function register(string $product = ''): void
     {
-        if (!empty($GLOBALS[Tools::GLOBAL_KEY]['color']) || !function_exists('add_action')) {
+        if (!function_exists('add_action') || isset(self::$done[$product])) {
             return;
         }
+        self::$done[$product] = true;
+        $mine = static fn (): bool => $product === '' || Tools::owner() === $product;
+        // alte Baukästen (bis 1.13) prüfen dieses Flag und laden dann nix mehr
         $GLOBALS[Tools::GLOBAL_KEY]['color'] = true;
-        \add_action('admin_enqueue_scripts', static function (): void {
-            if (self::isMgdPage(is_string($_GET['page'] ?? null) ? $_GET['page'] : '')) {
+        \add_action('admin_enqueue_scripts', static function () use ($mine): void {
+            if ($mine() && self::isMgdPage(is_string($_GET['page'] ?? null) ? $_GET['page'] : '')) {
                 self::enqueue();
             }
         });
-        \add_action('wp_ajax_' . self::AJAX, [self::class, 'ajax']);
+        \add_action('wp_ajax_' . self::AJAX, static function () use ($mine): void {
+            if ($mine()) {
+                self::ajax();
+            }
+        });
+    }
+
+    /** @var array<string,true> */
+    private static array $done = [];
+
+    /** nur Tests */
+    public static function reset(): void
+    {
+        self::$done = [];
     }
 
     // MGD Tools + Einstellungsseiten der MGD-Plugins
@@ -53,9 +72,11 @@ final class ColorPicker
         try {
             $base = dirname(__DIR__, 2) . '/KitInfo.php';
             $v = \MGD\WooSlider\Kit\KitInfo::VERSION;
-            \wp_enqueue_style(self::HANDLE, \plugins_url('Ui/assets/mgd-color.css', $base), [], $v);
-            \wp_enqueue_script(self::HANDLE, \plugins_url('Ui/assets/mgd-color.js', $base), [], $v, true);
-            \wp_add_inline_script(self::HANDLE, self::adapter((string) \admin_url('admin-ajax.php'), (string) \wp_create_nonce(self::AJAX)), 'after');
+            // eigener Handle je Stand + im Kopf laden: so gewinnt der neueste vor alten Kopien im Fuß (window.MGDColor-Schutz)
+            $h = self::HANDLE . '-' . str_replace('.', '-', $v);
+            \wp_enqueue_style($h, \plugins_url('Ui/assets/mgd-color.css', $base), [], $v);
+            \wp_enqueue_script($h, \plugins_url('Ui/assets/mgd-color.js', $base), [], $v, false);
+            \wp_add_inline_script($h, self::adapter((string) \admin_url('admin-ajax.php'), (string) \wp_create_nonce(self::AJAX)), 'after');
         } catch (\Throwable) {
         }
     }
