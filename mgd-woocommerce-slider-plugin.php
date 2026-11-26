@@ -3,7 +3,7 @@
  * Plugin Name:       MGD Slider
  * Plugin URI:        https://theme.michael-gahn.de/plugins/mgd-woocommerce-slider-plugin
  * Description:       Slider für WordPress, WooCommerce und Divi, mit Slides von Hand oder automatisch aus Beiträgen, Seiten und Shop-Artikeln.
- * Version:           2.1.3
+ * Version:           2.1.4
  * Requires at least: 6.5
  * Requires PHP:      8.1
  * Author:            Michael Gahn DESIGN
@@ -16,7 +16,7 @@ defined('ABSPATH') || exit;
 
 use MGD\WooSlider\Kit\Platform\WordPress\{Setup, Tools};
 
-define('MGD_SLIDER_VERSION', '2.1.3');
+define('MGD_SLIDER_VERSION', '2.1.4');
 define('MGD_SLIDER_FILE', __FILE__);
 define('MGD_SLIDER_DIR', plugin_dir_path(__FILE__));
 define('MGD_SLIDER_URL', plugin_dir_url(__FILE__));
