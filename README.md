@@ -1,6 +1,6 @@
 # MGD WooCommerce Slider Plugin
 
-> Version 2.1.1 (frühes Plugin). Das Plugin ist ein frühes Gerüst. Es ist noch nicht für echte Shops gedacht.
+> Version 2.1.3 (frühes Plugin). Das Plugin ist ein frühes Gerüst. Es ist noch nicht für echte Shops gedacht.
 
 Ein "Super-Slider" für WooCommerce von Michael Gahn DESIGN. Zwei Arten:
 
@@ -22,6 +22,13 @@ In der kostenlosen Version kannst du bis zu 5 Slider anlegen. Mit einer Pro-Lize
 - **Ohne WooCommerce:** Bei Art „Prime“ wählst du unter „Inhalte für Prime“ **WordPress-Inhalte**. Die Slides entstehen dann aus Beiträgen oder Seiten mit Beitragsbild (neueste zuerst, zufällig, nach Kategorie oder per ID).
 - **Mit WooCommerce:** Du kannst weiter **Shop-Artikel** wählen (meistverkauft, zufällig, Kategorie, manuell).
 - **Divi:** Im Divi-Builder gibt es das Modul **MGD Slider**. Dort wählst du einen Slider aus. Der Shortcode `[mgd_slider id="..."]` geht in Divi auch im Text- oder Code-Modul.
+
+## MGD Tools: an- und ausschalten, Lizenz
+
+Unter **MGD Tools** siehst du alle MGD-Plugins auf einen Blick. Beim Slider gibt es dort:
+
+- **Aktivieren / Deaktivieren:** Du kannst das Plugin direkt in MGD Tools an- oder ausschalten. Deine Slider bleiben dabei erhalten.
+- **Lizenz:** Hier steht, ob du die kostenlose Version (Free) oder eine Pro-Lizenz nutzt und ob die Lizenz gültig ist. Eine Pro-Lizenz für den Slider gibt es noch nicht.
 
 ## Info, Updates und Weitere Plugins
 
