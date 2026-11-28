@@ -1,5 +1,9 @@
 # Änderungen
 
+## [2.2.1] - 2026-11-28
+
+- Divi-Modul ohne PHP-Hinweis (PHP 8.3), Baukasten 1.17.0.
+
 ## [2.2.0] - 2026-11-27
 
 - MGD Tools immer farbig hervorgehoben, neue Einstellung Primärfarbe für alle MGD-Plugins (Baukasten 1.17.0).
