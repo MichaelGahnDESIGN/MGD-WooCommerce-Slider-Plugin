@@ -6,6 +6,10 @@ class MGD_Slider_Divi_Module extends ET_Builder_Module
 {
     public $slug = 'mgd_slider_divi';
     public $vb_support = 'on';
+    // Eigenschaften sauber deklarieren (PHP 8.2+ meckert sonst bei dynamischen Properties)
+    public $icon = '';
+    public $name = '';
+    public $plural = '';
 
     public function init(): void
     {
