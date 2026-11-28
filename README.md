@@ -1,6 +1,6 @@
 # MGD WooCommerce Slider Plugin
 
-> Version 2.1.4 (frühes Plugin). Das Plugin ist ein frühes Gerüst. Es ist noch nicht für echte Shops gedacht.
+> Version 2.2.0 (frühes Plugin). Das Plugin ist ein frühes Gerüst. Es ist noch nicht für echte Shops gedacht.
 
 Ein "Super-Slider" für WooCommerce von Michael Gahn DESIGN. Zwei Arten:
 
