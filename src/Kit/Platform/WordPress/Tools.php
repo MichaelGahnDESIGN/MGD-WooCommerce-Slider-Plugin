@@ -140,7 +140,7 @@ final class Tools
     public static function reset(): void
     {
         self::$local = [];
-        unset($GLOBALS[self::GLOBAL_KEY], $GLOBALS[self::ACCENT_FLAG]);
+        unset($GLOBALS[self::GLOBAL_KEY], $GLOBALS[self::ACCENT_FLAG], $GLOBALS[CombinedNotice::DONE]);
     }
 
     /**
@@ -276,6 +276,22 @@ final class Tools
         \add_action('admin_head', static function (): void {
             self::accentCss();
         }, 20);
+        // EIN Hinweis "Installation melden" für alle (Kit 1.18), räumt Einzel-Hinweise auch älterer Kopien weg
+        CombinedNotice::register();
+        // Schlüssel kopieren (Lizenz-Seite), nur der Besitzer antwortet
+        \add_action('wp_ajax_' . LicenseStatusCard::AJAX, static function () use ($own, $product): void {
+            if ($own()) {
+                LicenseStatusCard::ajax(ToolsPages::central($product));
+            }
+        });
+        // nach dem Update aktive Plugins wieder an (jede Kopie, Transient sorgt für nur 1x)
+        \add_action('upgrader_process_complete', [UpdateNow::class, 'reactivate'], 20, 2);
+        // Aktualisieren-Knopf (UpdateNow), nur der Besitzer antwortet
+        \add_action('admin_post_' . UpdateNow::ACTION, static function () use ($own, $product): void {
+            if ($own()) {
+                UpdateNow::handle($product);
+            }
+        });
         // an/aus Knopf (PluginToggle), nur der Besitzer antwortet
         \add_action('admin_post_' . PluginToggle::ACTION, static function () use ($own, $product): void {
             if ($own()) {

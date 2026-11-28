@@ -122,6 +122,36 @@ final class InstallBoot
         return $removed;
     }
 
+    /**
+     * alle Hinweis-Closures der Install-Clients (jede Kit-Kopie, jedes Produkt) für den gemeinsamen Hinweis (CombinedNotice)
+     * @return list<array{prio:int,fn:\Closure,flag:string}>
+     */
+    public static function noticeClosures(): array
+    {
+        $out = [];
+        foreach (self::callbacks('admin_notices') as $prio => $cbs) {
+            foreach ((array) $cbs as $cb) {
+                $fn = is_array($cb) ? ($cb['function'] ?? null) : null;
+                $flag = '';
+                $match = static function (array $v) use (&$flag): bool {
+                    $f = $v['flag'] ?? null;
+                    if (is_string($f) && str_starts_with($f, 'mgd_install_notice_') && array_key_exists('settingsUrl', $v)) {
+                        $flag = $f;
+
+                        return true;
+                    }
+
+                    return false;
+                };
+                if (self::isInstallClosure($fn, $match)) {
+                    $out[] = ['prio' => (int) $prio, 'fn' => $fn, 'flag' => $flag];
+                }
+            }
+        }
+
+        return $out;
+    }
+
     // Closure aus Platform\WordPress::boot? (auch fremde Namensräume, nur Klassenname + use-Variablen)
     private static function isInstallClosure(mixed $fn, \Closure $match): bool
     {

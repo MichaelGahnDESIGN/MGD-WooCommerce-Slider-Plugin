@@ -125,6 +125,25 @@ final class LicenseClient
         return is_int($c) && $c > 0 ? $c : 0;
     }
 
+    /** Paket-SKU der gültigen Lizenz ('' = keins / Theme-Lizenz) */
+    public function packageSku(): string
+    {
+        $sku = $this->enabled && $this->state()['valid'] ? ($this->store->load()['sku'] ?? '') : '';
+
+        return is_string($sku) ? $sku : '';
+    }
+
+    /** voller Schlüssel NUR für den Kopieren-Knopf (Ajax, manage_options + Nonce), nie ins HTML */
+    public function tokenForCopy(): string
+    {
+        return $this->enabled ? $this->token() : '';
+    }
+
+    public function domain(): string
+    {
+        return $this->domain;
+    }
+
     // Jetzt prüfen: Cache + Wartezeit weg, Schlüssel und Gnadenfrist bleiben
     public function refresh(): void
     {
@@ -213,7 +232,9 @@ final class LicenseClient
         $ent = self::cleanList($lic['entitlements'] ?? []);
         // Ablaufdatum fürs Anzeigen (MGD Tools), kaputt/fehlt = 0
         $end = is_string($lic['period_end'] ?? null) ? (int) strtotime($lic['period_end']) : 0;
-        $this->store->save(['token' => $token, 'valid' => true, 'tier' => $tier, 'reason' => 'ok', 'until' => $until, 'ok_until' => $until, 'ok_tier' => $tier, 'ent' => $ent, 'ok_ent' => $ent, 'end' => max(0, $end), 'checked' => $now]);
+        // Paket (Produkt-SKU) für die Status-Karte, Theme-Lizenz = leer
+        $sku = is_string($lic['product_sku'] ?? null) && preg_match(self::ENTITLEMENT_RE, $lic['product_sku']) === 1 ? $lic['product_sku'] : '';
+        $this->store->save(['token' => $token, 'valid' => true, 'tier' => $tier, 'reason' => 'ok', 'until' => $until, 'ok_until' => $until, 'ok_tier' => $tier, 'ent' => $ent, 'ok_ent' => $ent, 'end' => max(0, $end), 'checked' => $now, 'sku' => $sku]);
 
         return ['valid' => true, 'tier' => $tier, 'reason' => 'ok', 'source' => 'live', 'entitlements' => $ent];
     }

@@ -13,6 +13,7 @@
     hex: "HEX",
     copy: "Kopieren",
     copied: "Kopiert",
+    copyFail: "Kopieren hat nicht geklappt. Das Feld ist markiert, bitte mit Strg+C (Mac: Cmd+C) kopieren.",
     quick: "Schnellfarben",
     recent: "Zuletzt benutzt",
     mine: "Meine Farben",
@@ -219,10 +220,18 @@
       ui.msg.textContent = ok || ui.hex.value.length < 4 ? "" : T.invalid;
       if (ok) setHex(ok, "hex");
     });
-    ui.copy.addEventListener("click", async () => {
+    // Kopieren: Clipboard-API nur im sicheren Kontext, sonst markiertes HEX-Feld + execCommand, ehrliche Rückmeldung
+    ui.copy.addEventListener("click", () => {
       const v = fromHsv(hsv);
-      try { await navigator.clipboard.writeText(v); } catch (e) { ui.hex.select(); document.execCommand && document.execCommand("copy"); }
-      ui.msg.textContent = T.copied + ": " + v;
+      const ok = () => { ui.msg.textContent = T.copied + ": " + v; };
+      const fallback = () => {
+        ui.hex.value = v; ui.hex.focus(); ui.hex.select();
+        let done = false;
+        try { done = document.execCommand && document.execCommand("copy"); } catch (e) { done = false; }
+        ui.msg.textContent = done ? T.copied + ": " + v : T.copyFail;
+      };
+      if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(v).then(ok, fallback);
+      else fallback();
     });
     pop.addEventListener("click", (e) => {
       const del = e.target.closest("[data-del]");

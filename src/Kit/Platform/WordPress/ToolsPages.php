@@ -50,6 +50,21 @@ final class ToolsPages
                     $msg = ToolsTexts::CHECKED;
                 }
             }
+            // ein Schalter für alle: setzt jeden Install-Client direkt (auch ältere Kit-Kopien, gleicher Speicher je Produkt)
+            if (($_POST['mgd_tools_install_all_do'] ?? '') === '1') {
+                if (\wp_verify_nonce((string) ($_POST[self::INSTALL_NONCE] ?? ''), self::INSTALL_ACTION) === false) {
+                    $msg = ToolsTexts::RETRY;
+                } else {
+                    $on = ($_POST['mgd_tools_install_all'] ?? '') === '1';
+                    foreach (self::installClients() as $c) {
+                        $c->setEnabled($on);
+                    }
+                    $msg = ToolsTexts::INSTALL_SAVED;
+                }
+            }
+            $states = array_map(static fn ($c): bool => $c->isEnabled(), self::installClients());
+            $allOn = $states === [] ? null : (count(array_unique($states)) > 1 ? null : $states[0]);
+            $installAll = $states === [] ? '' : ToolsView::installAll($allOn, (string) \wp_nonce_field(self::INSTALL_ACTION, self::INSTALL_NONCE, true, false));
             $installs = [];
             foreach (Tools::entries() as $e) {
                 $h = self::call($e['install']);
@@ -60,10 +75,31 @@ final class ToolsPages
             $nonce = static fn (string $a): string => (string) \wp_create_nonce($a);
             $rows = [...self::rows($fresh, $lic, $nonce), ...self::inactiveRows(Tools::owner(), $nonce)];
             $at = $lic->enabled() ? $lic->checkedAt() : 0;
-            echo ToolsView::overview($rows, (string) \wp_nonce_field(Tools::CHECK_ACTION, Tools::NONCE, true, false), $msg, $installs, $at > 0 ? (string) \wp_date('d.m.Y H:i', $at) : '');
+            echo ToolsView::overview($rows, (string) \wp_nonce_field(Tools::CHECK_ACTION, Tools::NONCE, true, false), $msg, $installs, $at > 0 ? (string) \wp_date('d.m.Y H:i', $at) : '', $installAll);
         } catch (\Throwable) {
             echo '<div class="wrap"><p>' . ToolsTexts::ERROR . '</p></div>';
         }
+    }
+
+    public const INSTALL_ACTION = 'mgd_tools_install_all';
+    public const INSTALL_NONCE = '_mgd_tools_install_nonce';
+
+    /** Install-Clients aller aktiven MGD-Plugins (Speicher je Produkt, egal welche Kit-Kopie) @return list<\MGD\WooSlider\Kit\Install\InstallClient> */
+    public static function installClients(): array
+    {
+        $out = [];
+        foreach (Tools::entries() as $e) {
+            if (!$e['install'] instanceof \Closure) {
+                continue;
+            }
+            $platform = str_contains((string) $e['product'], 'woocommerce') ? 'woocommerce' : 'wordpress';
+            $c = \MGD\WooSlider\Kit\Install\Platform\WordPress::client((string) $e['product'], $platform, (string) $e['version']);
+            if ($c !== null) {
+                $out[] = $c;
+            }
+        }
+
+        return $out;
     }
 
     /** @return list<array<string,mixed>> */

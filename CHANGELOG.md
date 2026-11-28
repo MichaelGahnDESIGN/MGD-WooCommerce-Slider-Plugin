@@ -1,5 +1,9 @@
 # Änderungen
 
+## [2.3.0] - 2026-11-28
+
+- MGD Tools: Lizenz-Status-Karte mit Schlüssel kopieren, Aktualisieren-Knopf, ein gemeinsamer Hinweis (Baukasten 1.18.0).
+
 ## [2.2.1] - 2026-11-28
 
 - Divi-Modul ohne PHP-Hinweis (PHP 8.3), Baukasten 1.17.0.

@@ -131,6 +131,7 @@ final class RecommendationsView
             'installedVersion' => $installedVersion,
             'updateFile' => $state === 'update' ? $file : '',
             'file' => is_string($it['file'] ?? null) && preg_match(PluginToggle::FILE_RE, $it['file']) === 1 ? $it['file'] : '',
+            'refresh' => ($it['refresh'] ?? false) === true,
             'state' => $state === 'update' && $file === '' ? 'installed' : $state,
         ] + $f;
     }

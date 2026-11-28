@@ -32,6 +32,10 @@ final class CatalogState
                 // WP hält direkt nach dem Update evtl noch das alte Angebot > Version vergleichen
                 if ($canUpdate && is_string($offer) && $offer !== '' && version_compare($offer, $ver, '>')) {
                     $it['updateFile'] = $file;
+                } elseif ($canUpdate && !isset($offers[$file]) && is_string($it['version'] ?? null) && $it['version'] !== '' && $ver !== '' && version_compare(ltrim($it['version'], 'vV'), $ver, '>')) {
+                    // Katalog kennt schon die neue Version, WP hat noch gar kein Angebot (Cache) > Knopf holt es frisch (UpdateNow)
+                    $it['updateFile'] = $file;
+                    $it['refresh'] = true;
                 }
             }
             $it['state'] = $it['updateFile'] !== '' ? 'update' : ($it['installed'] ? 'installed' : 'available');

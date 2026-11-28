@@ -66,6 +66,26 @@ final class ToolsTexts
     public const ACCENT_RESET = 'Die Primärfarbe ist wieder MGD-Rot.';
     public const ACCENT_LIGHT = 'Diese Farbe ist sehr hell. Links werden deshalb etwas dunkler dargestellt, damit sie gut lesbar bleiben.';
     public const ACCENT_BAD = 'Bitte wähle eine Farbe im Format #rrggbb.';
+    // ein Hinweis + ein Schalter für alle (Kit 1.18, Texte freigegeben Koordination 28.11.)
+    public const NOTICE_ALL = 'Die MGD-Plugins%s melden sich einmal bei theme.michael-gahn.de an und danach höchstens einmal am Tag. Gesendet werden nur Plugin-Name, Version, die Domain deiner Website und eine zufällige Installations-ID. So bekommst du Updates, und wir wissen, wie viele Websites die Plugins nutzen. Du kannst das unter MGD Tools › Übersicht abschalten.';
+    public const NOTICE_LINK = 'MGD Tools › Übersicht';
+    public const INSTALL_ALL = 'Installation aller MGD-Plugins bei Michael Gahn DESIGN melden';
+    public const INSTALL_ALL_HINT = 'Die MGD-Plugins melden sich einmal bei theme.michael-gahn.de an und danach höchstens einmal am Tag. Gesendet werden nur Plugin-Name, Version, die Domain deiner Website und eine zufällige Installations-ID. Die Plugins funktionieren auch ohne Meldung genauso weiter.';
+    public const INSTALL_ADVANCED = 'Erweitert: je Plugin einzeln';
+    public const INSTALL_MIXED = 'Einige Plugins sind abweichend eingestellt (siehe Erweitert).';
+    public const INSTALL_SAVED = 'Die Einstellung gilt jetzt für alle MGD-Plugins.';
+    // Lizenz-Status-Karte (Kit 1.18, Texte zur Freigabe an Koordination)
+    public const LIC_CARD = 'Deine Lizenz';
+    public const LIC_ART = 'Art';
+    public const LIC_PACKAGE = 'Paket';
+    public const LIC_STATUS = 'Status';
+    public const LIC_UNTIL = 'Gültig bis';
+    public const LIC_DOMAIN = 'Domain';
+    public const LIC_LAST_CHECK = 'Zuletzt geprüft';
+    public const LIC_PER_PLUGIN = 'Freigeschaltet je Plugin';
+    public const KEY_COPY = 'Schlüssel kopieren';
+    public const KEY_COPIED = 'Der Schlüssel ist in der Zwischenablage.';
+    public const KEY_COPY_FAIL = 'Kopieren hat nicht geklappt. Der Schlüssel steht jetzt markiert im Feld, bitte mit Strg+C (Mac: Cmd+C) kopieren.';
     public const ERROR = 'Die Seite konnte gerade nicht geladen werden.';
     public const RETRY = 'Das hat nicht geklappt. Bitte lade die Seite neu und versuche es noch einmal.';
 }

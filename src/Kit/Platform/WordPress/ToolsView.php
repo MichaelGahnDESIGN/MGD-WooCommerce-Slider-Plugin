@@ -14,7 +14,7 @@ final class ToolsView
      * @param list<array<string,mixed>> $rows aus ToolsPages::rows
      * @param array<string,string> $installs Plugin-Name => fertiges Formular (Install-Client)
      */
-    public static function overview(array $rows, string $nonceField, string $message = '', array $installs = [], string $licChecked = ''): string
+    public static function overview(array $rows, string $nonceField, string $message = '', array $installs = [], string $licChecked = '', string $installAll = ''): string
     {
         if (!\current_user_can('manage_options')) {
             return '';
@@ -39,7 +39,9 @@ final class ToolsView
                 // Formular kommt fertig + escaped aus dem Install-Client
                 $in .= '<h3>' . Text::e((string) $name) . '</h3>' . $form;
             }
-            $out .= self::section('install', ToolsTexts::INSTALL, $in);
+            // ein Schalter für alle (Kit 1.18), einzelne Plugins nur unter Erweitert
+            $all = $installAll !== '' ? $installAll . '<details class="mgd-tools-advanced"><summary>' . Text::e(ToolsTexts::INSTALL_ADVANCED) . '</summary>' . $in . '</details>' : $in;
+            $out .= self::section('install', ToolsTexts::INSTALL, $all);
         }
 
         return self::wrap(ToolsTexts::MENU, $message, $out, ToolsTexts::INTRO, $check);
@@ -94,6 +96,17 @@ final class ToolsView
             . $td(6, '<span class="mgd-tools-actions">' . implode(' <span aria-hidden="true">·</span> ', $links) . $toggle . '</span>') . '</tr>';
     }
 
+    /** ein Schalter "Installation melden" für alle MGD-Plugins. $on null = gemischt */
+    public static function installAll(?bool $on, string $nonceField): string
+    {
+        return '<form method="post" class="mgd-tools-install-all">' . $nonceField
+            . '<input type="hidden" name="mgd_tools_install_all_do" value="1">'
+            . '<p><label><input type="checkbox" name="mgd_tools_install_all" value="1"' . ($on === true ? ' checked' : '') . '> ' . Text::e(ToolsTexts::INSTALL_ALL) . '</label></p>'
+            . '<p class="description">' . Text::e(ToolsTexts::INSTALL_ALL_HINT) . '</p>'
+            . ($on === null ? '<p class="mgd-tools-note">' . Text::e(ToolsTexts::INSTALL_MIXED) . '</p>' : '')
+            . '<p><button type="submit" class="button">' . Text::e(ToolsTexts::SAVE) . '</button></p></form>';
+    }
+
     /** MGD-M als Bild (inline SVG, kein externes Bild) */
     public static function mark(int $size): string
     {
@@ -121,7 +134,9 @@ final class ToolsView
         if (!$l->enabled()) {
             return self::wrap(ToolsTexts::LICENSE, $message, '<section class="mgd-kit-section"><p>' . Text::e(ToolsTexts::LICENSE_OFF) . '</p></section>', ToolsTexts::LICENSE_INTRO);
         }
-        $body = '<section class="mgd-kit-section">' . LicenseView::html($l, Tools::PARENT, $nonceField);
+        // Status-Karte zuerst (Kit 1.18), dann Schlüsselfeld
+        $card = function_exists('wp_create_nonce') ? LicenseStatusCard::forClient($l, (string) \wp_create_nonce(LicenseStatusCard::AJAX)) : '';
+        $body = $card . '<section class="mgd-kit-section">' . LicenseView::html($l, Tools::PARENT, $nonceField);
         $ent = $l->entitlements();
         if ($ent !== []) {
             $li = '';

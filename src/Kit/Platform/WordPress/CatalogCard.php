@@ -85,7 +85,8 @@ final class CatalogCard
         $name = (string) $it['name'];
         if ($it['state'] === 'update' && $nonce !== null) {
             $file = (string) $it['updateFile'];
-            $href = 'update.php?action=upgrade-plugin&plugin=' . rawurlencode($file) . '&_wpnonce=' . rawurlencode((string) $nonce('upgrade-plugin_' . $file));
+            // immer über UpdateNow: Angebot frisch + Aktiv-Zustand merken und nach dem Update wiederherstellen (A19c)
+            $href = UpdateNow::url($file, $nonce);
 
             return '<a class="mgd-kit-catalog__button" href="' . Text::e($href) . '">Aktualisieren</a>';
         }
